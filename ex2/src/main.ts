@@ -1,60 +1,171 @@
-import './style.css'
-import heroImg from './assets/hero.png'
-import typescriptLogo from './assets/typescript.svg'
-import viteLogo from './assets/vite.svg'
-import { setupCounter } from './counter.ts'
+import { mountApp, useState } from "./reactive-engine";
+import { attachRootEvents } from "./events";
+import type { StateSetter, Task, TaskFilter } from "./types";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-<section id="center">
-  <div class="hero">
-    <img src="${heroImg}" class="base" width="170" height="179">
-    <img src="${typescriptLogo}" class="framework" alt="TypeScript logo"/>
-    <img src="${viteLogo}" class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/main.ts</code> and save to test <code>HMR</code></p>
-  </div>
-  <button id="counter" type="button" class="counter"></button>
-</section>
+const root = document.getElementById("app");
 
-<div class="ticks"></div>
+if (!root) {
+  throw new Error("Missing #app.");
+}
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank">
-          <img class="logo" src="${viteLogo}" alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://www.typescriptlang.org" target="_blank">
-          <img class="button-icon" src="${typescriptLogo}" alt="">
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-      <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-      <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-      <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-    </ul>
-  </div>
-</section>
+let updateTasks: StateSetter<Task[]>;
+let updateFilter: StateSetter<TaskFilter>;
 
-<div class="ticks"></div>
-<section id="spacer"></section>
-`
+function TaskApp(): HTMLElement {
+  const [tasks, setTasks] = useState<Task[]>([
+    { id: "task-1", title: "Review PR", completed: false },
+    { id: "task-2", title: "Verify AST", completed: true },
+  ]);
+  const [filter, setFilter] = useState<TaskFilter>("ALL");
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+  updateTasks = setTasks;
+  updateFilter = setFilter;
+
+  const main = document.createElement("main");
+
+  const heading = document.createElement("h1");
+  heading.textContent = "Reactive Task Manager";
+
+  const summary = document.createElement("p");
+  summary.setAttribute("role", "status");
+  summary.textContent =
+    `Tasks: ${tasks.length} | Completed: ${
+      tasks.filter(task => task.completed).length
+    }`;
+
+  const form = document.createElement("form");
+  form.dataset.action = "add";
+  form.dataset.event = "submit";
+
+  const label = document.createElement("label");
+  label.htmlFor = "task-title";
+  label.textContent = "New task ";
+
+  const input = document.createElement("input");
+  input.id = "task-title";
+  input.name = "title";
+  input.type = "text";
+  input.required = true;
+  input.maxLength = 200;
+
+  const add = document.createElement("button");
+  add.type = "submit";
+  add.textContent = "Add Task";
+
+  form.append(label, input, add);
+
+  const filters = document.createElement("nav");
+  filters.setAttribute("aria-label", "Task filters");
+
+  const choices: TaskFilter[] = ["ALL", "ACTIVE", "COMPLETED"];
+
+  for (const choice of choices) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.id = `filter-${choice}`;
+    button.textContent = choice;
+    button.dataset.action = "filter";
+    button.dataset.filter = choice;
+    button.setAttribute("aria-pressed", String(filter === choice));
+    filters.append(button);
+  }
+
+  const section = document.createElement("section");
+  section.setAttribute("aria-labelledby", "tasks-heading");
+
+  const listHeading = document.createElement("h2");
+  listHeading.id = "tasks-heading";
+  listHeading.textContent = `${filter} tasks`;
+
+  const list = document.createElement("ul");
+  list.id = "task-list";
+
+  const visible = tasks.filter(task =>
+    filter === "ALL" ||
+    (filter === "ACTIVE" && !task.completed) ||
+    (filter === "COMPLETED" && task.completed)
+  );
+
+  for (const task of visible) {
+    const item = document.createElement("li");
+
+    const taskLabel = document.createElement("label");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = task.id;
+    checkbox.checked = task.completed;
+    checkbox.dataset.action = "toggle";
+    checkbox.dataset.event = "change";
+    checkbox.dataset.id = task.id;
+
+    taskLabel.append(
+      checkbox,
+      document.createTextNode(` ${task.title}`)
+    );
+
+    item.append(taskLabel);
+    list.append(item);
+  }
+
+  section.append(listHeading, list);
+
+  if (visible.length === 0) {
+    const empty = document.createElement("p");
+    empty.textContent = "No tasks in this filter.";
+    section.append(empty);
+  }
+
+  main.append(heading, summary, form, filters, section);
+  return main;
+}
+
+mountApp(TaskApp, root);
+
+const disconnect = attachRootEvents(root, (action, control) => {
+  if (action === "add" && control instanceof HTMLFormElement) {
+    const title = String(new FormData(control).get("title") ?? "").trim();
+    if (!title) return;
+
+    updateTasks(previous => [
+      ...previous,
+      {
+        id: `task-${crypto.randomUUID()}`,
+        title,
+        completed: false,
+      },
+    ]);
+
+    root.querySelector<HTMLInputElement>("#task-title")?.focus();
+  }
+
+  if (action === "toggle" && control instanceof HTMLInputElement) {
+    const id = control.dataset.id;
+    const completed = control.checked;
+
+    updateTasks(previous =>
+      previous.map(task =>
+        task.id === id ? { ...task, completed } : task
+      )
+    );
+
+    if (id) document.getElementById(id)?.focus();
+  }
+
+  if (action === "filter") {
+    const filter = control.dataset.filter;
+
+    if (
+      filter === "ALL" ||
+      filter === "ACTIVE" ||
+      filter === "COMPLETED"
+    ) {
+      updateFilter(filter);
+      document.getElementById(`filter-${filter}`)?.focus();
+    }
+  }
+});
+
+// Clean up the connection during Vite hot reload.
+if (import.meta.hot) {
+  import.meta.hot.dispose(disconnect);
+}
