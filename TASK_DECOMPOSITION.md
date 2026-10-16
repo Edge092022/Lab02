@@ -139,3 +139,56 @@ M6: feat(ui): assemble reactive todo application
 - [ ] All four milestone commits exist separately.
 
 Actual verification results: Pending.
+## Exercise 3 — Resilient State Machine & Skeleton Loader
+
+### WBS
+- [ ] E3-00: Define contracts and WBS.
+- [ ] E3-01: Prepare ex3 and define state types.
+- [ ] E3-02: Implement and verify async state transitions.
+- [ ] E3-03: Implement state views, skeleton CSS, and Retry Connection.
+- [ ] E3-04: Verify all states, retry, and request consistency.
+- [ ] M7: Commit verified multi-state component.
+
+### State Contract
+Use a TypeScript discriminated union:
+- IDLE: no request has started.
+- LOADING: a request is pending.
+- SUCCESS: contains successfully loaded data.
+- ERROR: contains a human-readable error message.
+
+Only SUCCESS contains data.
+Only ERROR contains an error message.
+
+### Transition Contract
+- IDLE -> LOADING when loading starts.
+- LOADING -> SUCCESS when the current request succeeds.
+- LOADING -> ERROR when the current request fails.
+- ERROR -> LOADING when Retry Connection is activated.
+- Ignore repeated load actions while already loading.
+- Catch request errors; do not leave rejected promises unhandled.
+
+### UI Contract
+- IDLE: show a Load Data button.
+- LOADING: show animated pulsing skeleton placeholders.
+- SUCCESS: show loaded items.
+- ERROR: show an error message and Retry Connection button.
+- Render only the view corresponding to the current state.
+- Use semantic HTML, safe text APIs, and root event delegation.
+- Respect prefers-reduced-motion for skeleton animation.
+- Provide accessible loading and error feedback.
+
+### Verification
+- [ ] Initial view is IDLE.
+- [ ] Starting a request shows LOADING and skeletons.
+- [ ] Successful request shows SUCCESS and data.
+- [ ] Failed request shows ERROR and readable feedback.
+- [ ] Retry Connection starts another request.
+- [ ] Retry can recover from ERROR to SUCCESS.
+- [ ] Repeated load actions do not create overlapping requests.
+- [ ] Keyboard operation works.
+- [ ] Build passes; no unexpected Console errors.
+
+### Required Git Milestone
+feat(ui): implement multi-state data component with skeleton feedback
+
+Actual verification results: Pending.
