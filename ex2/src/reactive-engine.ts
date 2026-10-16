@@ -1,9 +1,11 @@
 import { nextStateIndex, resetCursor, stateStore } from "./state-store";
-import type {
-  AppComponent,
-  StateResult,
-  StateSetter,
-} from "./types";
+type AppComponent = () => HTMLElement;
+
+type StateSetter<T> = (
+  update: T | ((previous: T) => T)
+) => void;
+
+type StateResult<T> = [T, StateSetter<T>];
 
 let component: AppComponent | null = null;
 let container: HTMLElement | null = null;
@@ -56,7 +58,7 @@ export function useState<T>(initialValue: T): StateResult<T> {
 
     const previous = stateStore[index] as T;
     const next = typeof update === "function"
-      ? (update as (previous: T) => T)(previous)
+      ? (update as (previous: T ) => T)(previous)
       : update;
 
     if (Object.is(previous, next)) return;
