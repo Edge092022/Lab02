@@ -1,60 +1,72 @@
-import './style.css'
-import heroImg from './assets/hero.png'
-import typescriptLogo from './assets/typescript.svg'
-import viteLogo from './assets/vite.svg'
-import { setupCounter } from './counter.ts'
+import { createElement, renderToDOM } from "./mini-react";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-<section id="center">
-  <div class="hero">
-    <img src="${heroImg}" class="base" width="170" height="179">
-    <img src="${typescriptLogo}" class="framework" alt="TypeScript logo"/>
-    <img src="${viteLogo}" class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/main.ts</code> and save to test <code>HMR</code></p>
-  </div>
-  <button id="counter" type="button" class="counter"></button>
-</section>
+const root = document.getElementById("app");
 
-<div class="ticks"></div>
+if (!root) {
+  throw new Error("Missing #app container.");
+}
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank">
-          <img class="logo" src="${viteLogo}" alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://www.typescriptlang.org" target="_blank">
-          <img class="button-icon" src="${typescriptLogo}" alt="">
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-      <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-      <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-      <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-    </ul>
-  </div>
-</section>
+const scriptPayload = "<script>alert(1)</script>";
+const imagePayload = "<img src=x onerror=alert(1)>";
 
-<div class="ticks"></div>
-<section id="spacer"></section>
-`
+const vApp = createElement(
+  "main",
+  { id: "root-view" },
+  createElement(
+    "header",
+    { className: "hero" },
+    createElement("h1", null, "Mini React Engine"),
+    createElement("p", null, "Exercise 1 — VNode and DOM mounting")
+  ),
+  createElement(
+    "section",
+    { "aria-labelledby": "security-heading" },
+    createElement("h2", { id: "security-heading" }, "XSS verification"),
+    createElement("p", { id: "script-test" }, scriptPayload),
+    createElement("p", { id: "image-test" }, imagePayload)
+  ),
+  createElement(
+    "button",
+    {
+      type: "button",
+      onClick: () => console.log("Ping"),
+    },
+    "Click"
+  )
+);
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+root.replaceChildren(renderToDOM(vApp));
+
+// Repeat mounting to check that previous content is replaced.
+root.replaceChildren(renderToDOM(vApp));
+
+const checks = {
+  "One mounted root": root.childNodes.length === 1,
+  "Semantic main": root.firstElementChild?.tagName === "MAIN",
+  "Expected element tree":
+    Array.from(root.querySelectorAll("*"))
+      .map((element) => element.tagName)
+      .join(",") === "MAIN,HEADER,H1,P,SECTION,H2,P,P,BUTTON",
+  "Script stays literal":
+    root.querySelector("#script-test")?.textContent === scriptPayload,
+  "Image stays literal":
+    root.querySelector("#image-test")?.textContent === imagePayload,
+  "No injected elements": root.querySelector("script, img") === null,
+  "No div elements": root.querySelector("div") === null,
+  "No inline handler": root.querySelector("[onclick], [onerror]") === null,
+  "One heading level 1": root.querySelectorAll("h1").length === 1,
+};
+
+console.table(checks);
+
+for (const [name, passed] of Object.entries(checks)) {
+  console.assert(passed, name);
+}
+
+console.log("VNode tree:", vApp);
+
+if (Object.values(checks).every(Boolean)) {
+  console.log("PASS: Exercise 1 mounting and XSS checks.");
+} else {
+  console.error("FAIL: Inspect the checks above.");
+}
