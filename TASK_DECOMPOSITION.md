@@ -85,3 +85,57 @@ Not run yet. Record actual results after each check.
 
 No confirmed AI failures recorded yet.
 Only document failures with actual evidence and fixes.
+## Exercise 2 — Reactive State Machine & Delegation Hub
+
+### WBS
+- [ ] E2-00: Define scope, contracts, and WBS.
+- [ ] E2-01: Prepare the ex2 project and state contracts.
+- [ ] E2-02: Implement and verify stateStore and resetCursor.
+- [ ] M3: Commit state storage and cursor engine.
+- [ ] E2-03: Implement and verify custom useState and render dispatcher.
+- [ ] M4: Commit reactive useState dispatcher.
+- [ ] E2-04: Implement and verify persistent root event delegation.
+- [ ] M5: Commit root event delegation listener.
+- [ ] E2-05: Assemble and verify Task Manager with dynamic filters.
+- [ ] M6: Commit reactive todo application.
+
+### Contracts
+- State is stored in an indexed array.
+- Reset the hook cursor before each application render.
+- Each useState call captures its own stable slot index.
+- Initialize a slot only when that slot has not been created.
+- A setter updates its captured slot and requests rendering.
+- Support direct values and functional state updates.
+- Keep hook calls unconditional and in the same order.
+- Attach application event listeners to the persistent root.
+- Do not attach listeners to rendered buttons or inputs.
+- Render UI from state; handle user events through state setters.
+
+### Application Scope
+- Show a task list.
+- Add tasks.
+- Toggle task completion.
+- Filter tasks by ALL, ACTIVE, and COMPLETED.
+- Use semantic HTML and labeled native controls.
+- Render task text safely through DOM APIs.
+
+### Required Git Milestones
+M3: feat(state): implement stateStore and resetCursor engine
+M4: feat(state): implement reactive useState dispatcher
+M5: feat(events): attach root event delegation listener
+M6: feat(ui): assemble reactive todo application
+
+### Verification
+- [ ] State survives repeated renders.
+- [ ] Multiple hooks keep independent state slots.
+- [ ] Setters update the correct slot.
+- [ ] Functional updates use the previous state.
+- [ ] UI updates after adding or toggling a task.
+- [ ] All three filters show the expected tasks.
+- [ ] Repeated rendering does not duplicate root listeners.
+- [ ] DevTools shows no listeners directly on child controls.
+- [ ] Keyboard operation works for the implemented controls.
+- [ ] Build passes and Console has no unexpected errors.
+- [ ] All four milestone commits exist separately.
+
+Actual verification results: Pending.
