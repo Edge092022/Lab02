@@ -35,6 +35,8 @@ export function mountApp(
   app: AppComponent,
   root: HTMLElement
 ): void {
+  stateStore.length = 0;
+
   component = app;
   container = root;
   renderApp();
