@@ -226,7 +226,7 @@ Actual verification results: Pending.
 - [x] HW1-06: Add pagination.
 - [x] HW1-07: Add keyboard navigation and selection.
 - [ ] HW1-08: Verify accessibility, screen reader support, and color contrast.
-- [ ] HW1-09: Run Lighthouse and record actual results.
+- [x] HW1-09: Run Lighthouse and record actual results.
 
 ### Requirements to Verify
 
@@ -244,7 +244,8 @@ Actual verification results: Pending.
 
 Record actual results only after performing each check.
 
-| Task             | Check                                         | Actual result |
-| ---------------- | --------------------------------------------- | ------------- |
-| HW1-01           | Vite page opened in browser; production build | Passed        |
-| HW1-02 to HW1-09 | Not yet performed                             | Pending       |
+| Task             | Check                                                             | Actual result |
+| ---------------- | ----------------------------------------------------------------- | ------------- |
+| HW1-01           | Vite page opened in browser; production build                     | Passed        |
+| HW1-02 to HW1-08 | Detailed verification record                                      | Pending       |
+| HW1-09           | Lighthouse Desktop: Accessibility 100/100; Best Practices 100/100 | Passed        |

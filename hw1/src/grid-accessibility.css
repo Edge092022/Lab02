@@ -7,3 +7,14 @@
   outline: 3px solid #1d4ed8;
   outline-offset: -3px;
 }
+button {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+[role="gridcell"] {
+  min-width: 44px;
+  height: 44px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
