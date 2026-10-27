@@ -1,60 +1,34 @@
-import './style.css'
-import heroImg from './assets/hero.png'
-import typescriptLogo from './assets/typescript.svg'
-import viteLogo from './assets/vite.svg'
-import { setupCounter } from './counter.ts'
+import { createDataGrid } from "./data-grid";
+import type { ColumnDef } from "./data-grid-contract";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-<section id="center">
-  <div class="hero">
-    <img src="${heroImg}" class="base" width="170" height="179">
-    <img src="${typescriptLogo}" class="framework" alt="TypeScript logo"/>
-    <img src="${viteLogo}" class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/main.ts</code> and save to test <code>HMR</code></p>
-  </div>
-  <button id="counter" type="button" class="counter"></button>
-</section>
+interface Student {
+  id: number;
+  name: string;
+  major: string;
+}
 
-<div class="ticks"></div>
+const students: Student[] = [
+  { id: 1, name: "An", major: "Information Technology" },
+  { id: 2, name: "Binh", major: "Information Systems" },
+  { id: 3, name: "Chi", major: "Computer Science" },
+];
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank">
-          <img class="logo" src="${viteLogo}" alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://www.typescriptlang.org" target="_blank">
-          <img class="button-icon" src="${typescriptLogo}" alt="">
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-      <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-      <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-      <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-    </ul>
-  </div>
-</section>
+const columns: ColumnDef<Student>[] = [
+  { header: "ID", accessorKey: "id", sortable: true },
+  { header: "Name", accessorKey: "name", sortable: true },
+  { header: "Major", accessorKey: "major", sortable: true },
+];
 
-<div class="ticks"></div>
-<section id="spacer"></section>
-`
+const heading = document.createElement("h1");
+heading.textContent = "Student Data Grid";
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+const grid = createDataGrid<Student>({
+  data: students,
+  columns,
+  ariaLabel: "Student data grid",
+});
+
+const main = document.createElement("main");
+main.append(heading, grid);
+
+document.body.replaceChildren(main);
