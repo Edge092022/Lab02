@@ -1,10 +1,16 @@
 import { filterRows } from "./filter-rows";
 import type { DataGridProps } from "./data-grid-contract";
 import { sortRows } from "./sort-rows";
+import { paginateRows } from "./paginate-rows";
 
 export function createDataGrid<T>(
   props: DataGridProps<T>,
   searchInput: HTMLInputElement,
+  pagination: {
+    previous: HTMLButtonElement;
+    next: HTMLButtonElement;
+    status: HTMLElement;
+  },
 ): HTMLTableElement {
   const table = document.createElement("table");
   table.setAttribute("role", "grid");
@@ -18,6 +24,8 @@ export function createDataGrid<T>(
 
   let activeColumn: number | null = null;
   let direction: "ascending" | "descending" = "ascending";
+  let currentPage = 1;
+const pageSize = 2;
 
   function renderRows(rows: T[]): void {
     tbody.replaceChildren();
@@ -37,20 +45,40 @@ export function createDataGrid<T>(
     }
   }
 
-  function updateRows(): void {
-  const filteredRows = filterRows(props.data, props.columns, searchInput.value);
+ function updateRows(): void {
+  let rows = filterRows(props.data, props.columns, searchInput.value);
 
-  if (activeColumn === null) {
-    renderRows(filteredRows);
-    return;
+  if (activeColumn !== null) {
+    const column = props.columns[activeColumn];
+    rows = sortRows(rows, column.accessorKey, direction);
   }
 
-  const column = props.columns[activeColumn];
-  renderRows(sortRows(filteredRows, column.accessorKey, direction));
+  const totalPages = Math.max(1, Math.ceil(rows.length / pageSize));
+  currentPage = Math.min(currentPage, totalPages);
+
+  renderRows(paginateRows(rows, currentPage, pageSize));
+
+  pagination.status.textContent = `Page ${currentPage} of ${totalPages}`;
+  pagination.previous.disabled = currentPage === 1;
+  pagination.next.disabled = currentPage === totalPages;
 }
 
-searchInput.addEventListener("input", updateRows);
+searchInput.addEventListener("input", () => {
+  currentPage = 1;
+  updateRows();
+});
 
+pagination.previous.addEventListener("click", () => {
+  if (currentPage > 1) {
+    currentPage -= 1;
+    updateRows();
+  }
+});
+
+pagination.next.addEventListener("click", () => {
+  currentPage += 1;
+  updateRows();
+});
   props.columns.forEach((column, index) => {
     const header = document.createElement("th");
     header.scope = "col";

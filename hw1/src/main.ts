@@ -29,6 +29,16 @@ searchLabel.textContent = "Search students: ";
 const searchInput = document.createElement("input");
 searchInput.id = "grid-search";
 searchInput.type = "search";
+const previousButton = document.createElement("button");
+previousButton.type = "button";
+previousButton.textContent = "Previous";
+
+const nextButton = document.createElement("button");
+nextButton.type = "button";
+nextButton.textContent = "Next";
+
+const pageStatus = document.createElement("span");
+pageStatus.setAttribute("aria-live", "polite");
 
 const grid = createDataGrid<Student>(
   {
@@ -37,10 +47,23 @@ const grid = createDataGrid<Student>(
     ariaLabel: "Student data grid",
   },
   searchInput,
+   {
+    previous: previousButton,
+    next: nextButton,
+    status: pageStatus,
+  },
 );
 
 
 const main = document.createElement("main");
-main.append(heading, searchLabel, searchInput, grid);
+main.append(
+  heading,
+  searchLabel,
+  searchInput,
+  grid,
+  previousButton,
+  pageStatus,
+  nextButton,
+);
 
 document.body.replaceChildren(main);
