@@ -22,13 +22,25 @@ const columns: ColumnDef<Student>[] = [
 const heading = document.createElement("h1");
 heading.textContent = "Student Data Grid";
 
-const grid = createDataGrid<Student>({
-  data: students,
-  columns,
-  ariaLabel: "Student data grid",
-});
+const searchLabel = document.createElement("label");
+searchLabel.htmlFor = "grid-search";
+searchLabel.textContent = "Search students: ";
+
+const searchInput = document.createElement("input");
+searchInput.id = "grid-search";
+searchInput.type = "search";
+
+const grid = createDataGrid<Student>(
+  {
+    data: students,
+    columns,
+    ariaLabel: "Student data grid",
+  },
+  searchInput,
+);
+
 
 const main = document.createElement("main");
-main.append(heading, grid);
+main.append(heading, searchLabel, searchInput, grid);
 
 document.body.replaceChildren(main);

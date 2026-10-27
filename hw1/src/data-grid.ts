@@ -1,7 +1,11 @@
+import { filterRows } from "./filter-rows";
 import type { DataGridProps } from "./data-grid-contract";
 import { sortRows } from "./sort-rows";
 
-export function createDataGrid<T>(props: DataGridProps<T>): HTMLTableElement {
+export function createDataGrid<T>(
+  props: DataGridProps<T>,
+  searchInput: HTMLInputElement,
+): HTMLTableElement {
   const table = document.createElement("table");
   table.setAttribute("role", "grid");
   table.setAttribute("aria-label", props.ariaLabel);
@@ -32,6 +36,20 @@ export function createDataGrid<T>(props: DataGridProps<T>): HTMLTableElement {
       tbody.appendChild(row);
     }
   }
+
+  function updateRows(): void {
+  const filteredRows = filterRows(props.data, props.columns, searchInput.value);
+
+  if (activeColumn === null) {
+    renderRows(filteredRows);
+    return;
+  }
+
+  const column = props.columns[activeColumn];
+  renderRows(sortRows(filteredRows, column.accessorKey, direction));
+}
+
+searchInput.addEventListener("input", updateRows);
 
   props.columns.forEach((column, index) => {
     const header = document.createElement("th");
@@ -72,12 +90,12 @@ export function createDataGrid<T>(props: DataGridProps<T>): HTMLTableElement {
     }
 
     headerRow.cells[index].setAttribute("aria-sort", direction);
-    renderRows(sortRows(props.data, column.accessorKey, direction));
+    updateRows();
   });
 
   thead.appendChild(headerRow);
   table.append(thead, tbody);
-  renderRows(props.data);
+  updateRows();
 
   return table;
 }

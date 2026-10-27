@@ -222,7 +222,7 @@ Actual verification results: Pending.
 - [x] HW1-02: Define the Data Grid TypeScript interfaces.
 - [x] HW1-03: Create the semantic grid structure and render data.
 - [x] HW1-04: Add sorting.
-- [ ] HW1-05: Add filtering.
+- [x] HW1-05: Add filtering.
 - [ ] HW1-06: Add pagination.
 - [ ] HW1-07: Add keyboard navigation and selection.
 - [ ] HW1-08: Verify accessibility, screen reader support, and color contrast.
