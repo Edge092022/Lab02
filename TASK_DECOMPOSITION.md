@@ -218,7 +218,7 @@ Actual verification results: Pending.
 
 ### WBS
 
-- [ ] HW1-01: Inspect the project and prepare a separate HW1 workspace.
+- [x] HW1-01: Inspect the project and prepare a separate HW1 workspace.
 - [ ] HW1-02: Define the Data Grid TypeScript interfaces.
 - [ ] HW1-03: Create the semantic grid structure and render data.
 - [ ] HW1-04: Add sorting.
@@ -244,6 +244,7 @@ Actual verification results: Pending.
 
 Record actual results only after performing each check.
 
-| Task             | Check             | Actual result |
-| ---------------- | ----------------- | ------------- |
-| HW1-01 to HW1-09 | Not yet performed | Pending       |
+| Task             | Check                                         | Actual result |
+| ---------------- | --------------------------------------------- | ------------- |
+| HW1-01           | Vite page opened in browser; production build | Passed        |
+| HW1-02 to HW1-09 | Not yet performed                             | Pending       |
