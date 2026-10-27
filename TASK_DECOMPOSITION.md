@@ -244,8 +244,11 @@ Actual verification results: Pending.
 
 Record actual results only after performing each check.
 
-| Task             | Check                                                             | Actual result |
-| ---------------- | ----------------------------------------------------------------- | ------------- |
-| HW1-01           | Vite page opened in browser; production build                     | Passed        |
-| HW1-02 to HW1-08 | Detailed verification record                                      | Pending       |
-| HW1-09           | Lighthouse Desktop: Accessibility 100/100; Best Practices 100/100 | Passed        |
+| Task             | Check                                                               | Actual result            |
+| ---------------- | ------------------------------------------------------------------- | ------------------------ |
+| HW1-01           | Vite page opened in browser; production build                       | Passed                   |
+| HW1-02 to HW1-07 | Detailed verification record                                        | Pending                  |
+| HW1-08           | Narrator: selection, sorting direction, and page status announced   | Checked by student       |
+| HW1-08           | DevTools text contrast: white background 21:1; selected row 17.21:1 | Checked on sampled cells |
+| HW1-08           | Full WCAG 2.2 AA assessment                                         | Not yet verified         |
+| HW1-09           | Lighthouse Desktop: Accessibility 100/100; Best Practices 100/100   | Passed                   |
