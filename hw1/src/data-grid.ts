@@ -1,4 +1,5 @@
 import type { DataGridProps } from "./data-grid-contract";
+import { sortRows } from "./sort-rows";
 
 export function createDataGrid<T>(props: DataGridProps<T>): HTMLTableElement {
   const table = document.createElement("table");
@@ -9,32 +10,74 @@ export function createDataGrid<T>(props: DataGridProps<T>): HTMLTableElement {
   const headerRow = document.createElement("tr");
   headerRow.setAttribute("role", "row");
 
-  for (const column of props.columns) {
-    const header = document.createElement("th");
-    header.scope = "col";
-    header.textContent = column.header;
-    headerRow.appendChild(header);
-  }
-
-  thead.appendChild(headerRow);
-  table.appendChild(thead);
-
   const tbody = document.createElement("tbody");
 
-  for (const item of props.data) {
-    const row = document.createElement("tr");
-    row.setAttribute("role", "row");
+  let activeColumn: number | null = null;
+  let direction: "ascending" | "descending" = "ascending";
 
-    for (const column of props.columns) {
-      const cell = document.createElement("td");
-      cell.setAttribute("role", "gridcell");
-      cell.textContent = String(item[column.accessorKey] ?? "");
-      row.appendChild(cell);
+  function renderRows(rows: T[]): void {
+    tbody.replaceChildren();
+
+    for (const item of rows) {
+      const row = document.createElement("tr");
+      row.setAttribute("role", "row");
+
+      for (const column of props.columns) {
+        const cell = document.createElement("td");
+        cell.setAttribute("role", "gridcell");
+        cell.textContent = String(item[column.accessorKey] ?? "");
+        row.appendChild(cell);
+      }
+
+      tbody.appendChild(row);
     }
-
-    tbody.appendChild(row);
   }
 
-  table.appendChild(tbody);
+  props.columns.forEach((column, index) => {
+    const header = document.createElement("th");
+    header.scope = "col";
+
+    if (column.sortable) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = column.header;
+      button.dataset.columnIndex = String(index);
+      header.appendChild(button);
+    } else {
+      header.textContent = column.header;
+    }
+
+    headerRow.appendChild(header);
+  });
+
+  thead.addEventListener("click", (event) => {
+    const target = event.target;
+
+    if (!(target instanceof HTMLButtonElement)) return;
+
+    const index = Number(target.dataset.columnIndex);
+    const column = props.columns[index];
+
+    if (!column || !column.sortable) return;
+
+    direction =
+      activeColumn === index && direction === "ascending"
+        ? "descending"
+        : "ascending";
+
+    activeColumn = index;
+
+    for (const header of headerRow.cells) {
+      header.removeAttribute("aria-sort");
+    }
+
+    headerRow.cells[index].setAttribute("aria-sort", direction);
+    renderRows(sortRows(props.data, column.accessorKey, direction));
+  });
+
+  thead.appendChild(headerRow);
+  table.append(thead, tbody);
+  renderRows(props.data);
+
   return table;
 }
