@@ -1,0 +1,9 @@
+[role="grid"] tr[aria-selected="true"] {
+  background-color: #dbeafe;
+  box-shadow: inset 4px 0 #1d4ed8;
+}
+
+[role="gridcell"]:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: -3px;
+}

@@ -1,3 +1,4 @@
+import "./grid-accessibility.css";
 import { createDataGrid } from "./data-grid";
 import type { ColumnDef } from "./data-grid-contract";
 
