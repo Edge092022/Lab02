@@ -224,7 +224,7 @@ Actual verification results: Pending.
 - [x] HW1-04: Add sorting.
 - [x] HW1-05: Add filtering.
 - [x] HW1-06: Add pagination.
-- [ ] HW1-07: Add keyboard navigation and selection.
+- [x] HW1-07: Add keyboard navigation and selection.
 - [ ] HW1-08: Verify accessibility, screen reader support, and color contrast.
 - [ ] HW1-09: Run Lighthouse and record actual results.
 

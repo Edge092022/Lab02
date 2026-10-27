@@ -45,6 +45,9 @@ const grid = createDataGrid<Student>(
     data: students,
     columns,
     ariaLabel: "Student data grid",
+    onRowSelect: (student) => {
+  console.log("Selected student:", student);
+},
   },
   searchInput,
    {
