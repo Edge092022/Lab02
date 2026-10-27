@@ -58,6 +58,43 @@ export function createDataGrid<T>(
     }
   }
 
+tbody.addEventListener("click", (event) => {
+  const target = event.target;
+
+  if (!(target instanceof HTMLTableCellElement)) return;
+  if (target.getAttribute("role") !== "gridcell") return;
+
+  const row = target.parentElement;
+  if (!(row instanceof HTMLTableRowElement)) return;
+  if (!rowItems.has(row)) return;
+
+  const item = rowItems.get(row) as T;
+
+  selectedItems.clear();
+  selectedItems.add(item);
+
+  for (const visibleRow of Array.from(tbody.rows)) {
+    const rowItem = rowItems.get(visibleRow) as T;
+    visibleRow.setAttribute(
+      "aria-selected",
+      String(selectedItems.has(rowItem)),
+    );
+  }
+
+  const currentTabCell = tbody.querySelector<HTMLTableCellElement>(
+    '[role="gridcell"][tabindex="0"]',
+  );
+
+  if (currentTabCell) {
+    currentTabCell.tabIndex = -1;
+  }
+
+  target.tabIndex = 0;
+  target.focus();
+
+  props.onRowSelect?.(item);
+});
+
   tbody.addEventListener("keydown", (event) => {
     const currentCell = event.target;
 
