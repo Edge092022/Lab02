@@ -1,11 +1,13 @@
 # TASK_DECOMPOSITION — Lab 02
 
 ## Scope
+
 Exercise 1: Building Mini-React VNode & Mounting Engine.
 Source: Lab 02, slide 15.
 Exercise 2 and Exercise 3 will be decomposed later.
 
 ## Workflow
+
 Functional Slicing → Contract-First Specification
 → Atomic Generation → Independent Verification.
 
@@ -27,11 +29,13 @@ Student responsibility: run checks, inspect results, and commit.
 ## Contracts to Define Before Coding
 
 ### createTextElement
+
 - Input: a string or number.
 - Output: a text VNode containing its string value.
 - Invariant: no HTML parsing or DOM mutation.
 
 ### createElement
+
 - Input: a supported tag, props, and children.
 - Output: a VNode with normalized children.
 - Invariant: text children become text VNodes;
@@ -39,6 +43,7 @@ Student responsibility: run checks, inspect results, and commit.
   null, undefined, and boolean children are omitted.
 
 ### renderToDOM
+
 - Input: a validated VNode.
 - Output: a DOM Node.
 - Invariant: text uses safe DOM APIs;
@@ -49,9 +54,11 @@ Student responsibility: run checks, inspect results, and commit.
 ## Required Git Milestones
 
 ### M1 — After Factory Verification
+
 feat(core): implement createElement factory
 
 ### M2 — After Renderer Verification
+
 feat(core): implement renderToDOM
 
 Do not merge these milestones into one commit.
@@ -74,20 +81,22 @@ Do not merge these milestones into one commit.
 
 Not run yet. Record actual results after each check.
 
-| Task | Check | Actual result |
-| --- | --- | --- |
-| E1-02 | Text VNode factory | Pending |
-| E1-03 | Element factory and child normalization | Pending |
-| E1-04 | Recursive rendering and typeguards | Pending |
-| E1-05 | XSS and DevTools audit | Pending |
+| Task  | Check                                   | Actual result |
+| ----- | --------------------------------------- | ------------- |
+| E1-02 | Text VNode factory                      | Pending       |
+| E1-03 | Element factory and child normalization | Pending       |
+| E1-04 | Recursive rendering and typeguards      | Pending       |
+| E1-05 | XSS and DevTools audit                  | Pending       |
 
 ## AI Failure Audit
 
 No confirmed AI failures recorded yet.
 Only document failures with actual evidence and fixes.
+
 ## Exercise 2 — Reactive State Machine & Delegation Hub
 
 ### WBS
+
 - [ ] E2-00: Define scope, contracts, and WBS.
 - [ ] E2-01: Prepare the ex2 project and state contracts.
 - [ ] E2-02: Implement and verify stateStore and resetCursor.
@@ -100,6 +109,7 @@ Only document failures with actual evidence and fixes.
 - [ ] M6: Commit reactive todo application.
 
 ### Contracts
+
 - State is stored in an indexed array.
 - Reset the hook cursor before each application render.
 - Each useState call captures its own stable slot index.
@@ -112,6 +122,7 @@ Only document failures with actual evidence and fixes.
 - Render UI from state; handle user events through state setters.
 
 ### Application Scope
+
 - Show a task list.
 - Add tasks.
 - Toggle task completion.
@@ -120,12 +131,14 @@ Only document failures with actual evidence and fixes.
 - Render task text safely through DOM APIs.
 
 ### Required Git Milestones
+
 M3: feat(state): implement stateStore and resetCursor engine
 M4: feat(state): implement reactive useState dispatcher
 M5: feat(events): attach root event delegation listener
 M6: feat(ui): assemble reactive todo application
 
 ### Verification
+
 - [ ] State survives repeated renders.
 - [ ] Multiple hooks keep independent state slots.
 - [ ] Setters update the correct slot.
@@ -139,9 +152,11 @@ M6: feat(ui): assemble reactive todo application
 - [ ] All four milestone commits exist separately.
 
 Actual verification results: Pending.
+
 ## Exercise 3 — Resilient State Machine & Skeleton Loader
 
 ### WBS
+
 - [ ] E3-00: Define contracts and WBS.
 - [ ] E3-01: Prepare ex3 and define state types.
 - [ ] E3-02: Implement and verify async state transitions.
@@ -150,7 +165,9 @@ Actual verification results: Pending.
 - [ ] M7: Commit verified multi-state component.
 
 ### State Contract
+
 Use a TypeScript discriminated union:
+
 - IDLE: no request has started.
 - LOADING: a request is pending.
 - SUCCESS: contains successfully loaded data.
@@ -160,6 +177,7 @@ Only SUCCESS contains data.
 Only ERROR contains an error message.
 
 ### Transition Contract
+
 - IDLE -> LOADING when loading starts.
 - LOADING -> SUCCESS when the current request succeeds.
 - LOADING -> ERROR when the current request fails.
@@ -168,6 +186,7 @@ Only ERROR contains an error message.
 - Catch request errors; do not leave rejected promises unhandled.
 
 ### UI Contract
+
 - IDLE: show a Load Data button.
 - LOADING: show animated pulsing skeleton placeholders.
 - SUCCESS: show loaded items.
@@ -178,6 +197,7 @@ Only ERROR contains an error message.
 - Provide accessible loading and error feedback.
 
 ### Verification
+
 - [ ] Initial view is IDLE.
 - [ ] Starting a request shows LOADING and skeletons.
 - [ ] Successful request shows SUCCESS and data.
@@ -189,6 +209,41 @@ Only ERROR contains an error message.
 - [ ] Build passes; no unexpected Console errors.
 
 ### Required Git Milestone
+
 feat(ui): implement multi-state data component with skeleton feedback
 
 Actual verification results: Pending.
+
+## Homework 1 — Accessible Data Grid
+
+### WBS
+
+- [ ] HW1-01: Inspect the project and prepare a separate HW1 workspace.
+- [ ] HW1-02: Define the Data Grid TypeScript interfaces.
+- [ ] HW1-03: Create the semantic grid structure and render data.
+- [ ] HW1-04: Add sorting.
+- [ ] HW1-05: Add filtering.
+- [ ] HW1-06: Add pagination.
+- [ ] HW1-07: Add keyboard navigation and selection.
+- [ ] HW1-08: Verify accessibility, screen reader support, and color contrast.
+- [ ] HW1-09: Run Lighthouse and record actual results.
+
+### Requirements to Verify
+
+- [ ] Use table, thead, tbody, th with scope="col", and button.
+- [ ] Provide role="grid", role="row", and role="gridcell" semantics.
+- [ ] Support sorting, filtering, and pagination.
+- [ ] Arrow keys navigate between grid cells.
+- [ ] Enter selects and Space toggles as required.
+- [ ] Check against WCAG 2.2 Level AA, including screen reader support.
+- [ ] Check the required 4.5:1 color contrast.
+- [ ] Lighthouse Accessibility score is 100/100.
+- [ ] Lighthouse Best Practices score is 100/100.
+
+### Verification Record
+
+Record actual results only after performing each check.
+
+| Task             | Check             | Actual result |
+| ---------------- | ----------------- | ------------- |
+| HW1-01 to HW1-09 | Not yet performed | Pending       |
