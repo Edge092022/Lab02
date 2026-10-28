@@ -288,7 +288,7 @@ Functional Slicing → Contract-First → Atomic Generation
 - [x] HW2-04: Implement and verify FIFO task scheduling.
 - [x] HW2-05: Implement and verify task cancellation and stale-result handling.
 - [x] HW2-06: Implement and verify audio playback and source-node cleanup.
-- [ ] HW2-07: Implement and verify the analyser module and FFT configuration.
+- [x] HW2-07: Implement and verify the analyser module and FFT configuration.
 - [ ] HW2-08: Implement and verify the Canvas visualizer lifecycle.
 - [ ] HW2-09: Create the semantic, keyboard-accessible control interface.
 - [ ] HW2-10: Integrate controls through a lifecycle-managed application controller.
@@ -356,7 +356,7 @@ Record actual results only after performing each check.
 | HW2-04 | FIFO ordering and active-task limit | Seven browser checks with a controlled loader passed: FIFO order, blank URL rejection, buffer delivery, continuation after failure, and restart after idle; maxActive=1 and final active=0; TypeScript and production build passed after fixing TS1294; queue cancellation not yet implemented |
 | HW2-05 | Cancellation, promise settlement, and stale-result rejection | TypeScript and production build passed; seven controlled-loader cancellation/disposal checks passed, including immediate rejection, waiting for the old loader, discarded cancelled results, and rejection after disposal; seven FIFO regression checks passed with order A,B,C,D, maxActive=1, and final active=0 |
 | HW2-06 | Playback end, stop, replacement, and source cleanup | TypeScript and production build passed; seven browser playback lifecycle checks passed; four cleanup checks passed for natural end, stop, replacement, and disposal, each with one disconnect call and cleared buffer/handler; audible output not confirmed; memory leaks not measured |
-| HW2-07 | FFT configuration and frequency data                           | Pending                                                                                                                                                    |
+| HW2-07 | FFT configuration and frequency data | TypeScript and production build passed; seven browser analyser checks passed: fftSize=512, 256 bins, reused byte array, nonzero real-signal data, expected frequency peak, repeated disposal/read rejection, and external context ownership; sampleRate=48000 Hz, test frequency=750 Hz, peakBin=8, peakValue=255 |
 | HW2-08 | Rendering, single animation loop, and loop cancellation        | Pending                                                                                                                                                    |
 | HW2-09 | Semantic structure, labels, and keyboard operation             | Pending                                                                                                                                                    |
 | HW2-10 | Integrated controls and listener lifecycle                     | Pending                                                                                                                                                    |
