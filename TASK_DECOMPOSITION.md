@@ -252,3 +252,127 @@ Record actual results only after performing each check.
 | HW1-08           | DevTools text contrast: white background 21:1; selected row 17.21:1 | Checked on sampled cells |
 | HW1-08           | Full WCAG 2.2 AA assessment                                         | Not yet verified         |
 | HW1-09           | Lighthouse Desktop: Accessibility 100/100; Best Practices 100/100   | Passed                   |
+
+## Homework 2 — Concurrent FIFO Audio Visualizer Queue Engine
+
+### Scope
+
+Implement HW2 in a separate hw2 directory.
+Preserve all Exercise and HW1 files.
+
+Workflow:
+Functional Slicing → Contract-First → Atomic Generation
+→ Independent Verification.
+
+### Initial Design Decisions
+
+- The queue accepts multiple enqueue calls while another task is active.
+- Process one download-and-decode task at a time in FIFO order.
+- FIFO applies to download and decode processing; playback is separate.
+- enqueue resolves with an AudioBuffer or rejects on failure/cancellation.
+- Cancellation affects the active task and all waiting tasks.
+- Cancelled tasks reject with AbortError.
+- AbortController cancels fetch; an active decode cannot be directly aborted.
+- Ignore cancelled decode results and wait for that decode to finish
+  before starting another task.
+- Use analyser fftSize = 512, producing 256 frequency bins.
+- Use Canvas with requestAnimationFrame.
+- These are implementation decisions based on the supplied specification.
+
+### WBS
+
+- [ ] HW2-00: Review requirements and define the HW2 WBS.
+- [ ] HW2-01: Prepare a separate Vite + TypeScript workspace in hw2.
+- [ ] HW2-02: Define queue types, public API, and lifecycle contracts.
+- [ ] HW2-03: Implement and verify the audio download and decode module.
+- [ ] HW2-04: Implement and verify FIFO task scheduling.
+- [ ] HW2-05: Implement and verify task cancellation and stale-result handling.
+- [ ] HW2-06: Implement and verify audio playback and source-node cleanup.
+- [ ] HW2-07: Implement and verify the analyser module and FFT configuration.
+- [ ] HW2-08: Implement and verify the Canvas visualizer lifecycle.
+- [ ] HW2-09: Create the semantic, keyboard-accessible control interface.
+- [ ] HW2-10: Integrate controls through a lifecycle-managed application controller.
+- [ ] HW2-11: Verify concurrent requests, FIFO behavior, errors, and cancellation.
+- [ ] HW2-12: Measure rendering performance under recorded conditions.
+- [ ] HW2-13: Inspect memory and resource cleanup across repeated lifecycle cycles.
+
+Each implementation task must define its concrete contract before coding.
+Add supporting verification files only when needed for the current task.
+
+### Contract Requirements
+
+#### Queue
+
+- Define FIFO ordering and the maximum number of active tasks.
+- Define whether FIFO applies to task start, completion, or playback.
+- Every accepted task must eventually resolve or reject.
+- A failed or cancelled task must not block later eligible tasks.
+- Define the behavior of cancellation and disposal.
+
+#### Download and Decode
+
+- Define URL input, AudioBuffer output, and error behavior.
+- Check HTTP response status before decoding.
+- Pass an AbortSignal to fetch.
+- Audio decoding does not accept an AbortSignal.
+- Ignore a decoded result if its task has become invalid.
+- Prevent stale results from triggering playback or UI updates.
+
+#### Playback and Analysis
+
+- Define ownership and lifecycle of the AudioContext and audio nodes.
+- Create a new AudioBufferSourceNode for each playback.
+- Release source connections and handlers when playback ends or is stopped.
+- Define the analyser fftSize and resulting frequencyBinCount explicitly.
+- Define cleanup behavior for partial initialization and repeated disposal.
+
+#### Visualizer
+
+- Use requestAnimationFrame for rendering.
+- Reuse frequency data storage between frames.
+- Prevent duplicate animation loops.
+- Cancel the animation loop during cleanup.
+- Verify performance through measurement before claiming 60fps.
+
+#### Interface
+
+- Use semantic HTML and labeled native controls.
+- Support keyboard operation.
+- Render user-controlled text with safe DOM APIs.
+- Use event delegation where appropriate.
+- Remove owned listeners during cleanup.
+- Show task status and readable error feedback.
+
+### Verification Record
+
+Record actual results only after performing each check.
+
+| Task   | Check                                                          | Actual result |
+| ------ | -------------------------------------------------------------- | ------------- |
+| HW2-00 | Requirements, assumptions, and WBS reviewed                    | Pending       |
+| HW2-01 | Independent workspace, TypeScript check, and build             | Pending       |
+| HW2-02 | Contracts reviewed against confirmed requirements              | Pending       |
+| HW2-03 | Valid audio, HTTP failure, invalid audio, and aborted download | Pending       |
+| HW2-04 | FIFO ordering and active-task limit                            | Pending       |
+| HW2-05 | Cancellation, promise settlement, and stale-result rejection   | Pending       |
+| HW2-06 | Playback end, stop, replacement, and source cleanup            | Pending       |
+| HW2-07 | FFT configuration and frequency data                           | Pending       |
+| HW2-08 | Rendering, single animation loop, and loop cancellation        | Pending       |
+| HW2-09 | Semantic structure, labels, and keyboard operation             | Pending       |
+| HW2-10 | Integrated controls and listener lifecycle                     | Pending       |
+| HW2-11 | Concurrent requests, failures, and cancellation scenarios      | Pending       |
+| HW2-12 | Recorded browser, workload, and measured rendering performance | Pending       |
+| HW2-13 | Repeated lifecycle cycles and memory/resource observations     | Pending       |
+
+### Git Policy
+
+- Review the diff before staging.
+- Stage only files belonging to the current task.
+- Use a separate Conventional Commit for each verified task.
+- Do not include Exercise, HW1, or unrelated editor files.
+- Do not mark a task complete before actual verification.
+
+### AI Failure Audit
+
+Record only confirmed AI errors with evidence and the applied fix
+in AI_FAILURE_AUDIT.md.
