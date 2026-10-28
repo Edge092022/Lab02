@@ -1,13 +1,78 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>hw2</title>
+    <title>HW2 — FIFO Audio Visualizer</title>
   </head>
   <body>
-    <div id="app"></div>
+    <main id="app">
+      <header>
+        <h1>FIFO Audio Visualizer</h1>
+        <p>Thêm URL âm thanh để tải và giải mã theo thứ tự FIFO.</p>
+      </header>
+
+      <section aria-labelledby="controls-heading">
+        <h2 id="controls-heading">Điều khiển âm thanh</h2>
+
+        <label for="track-url">URL âm thanh</label>
+        <p id="url-help" class="hint">
+          Dùng đường dẫn cùng website hoặc URL cho phép truy cập CORS.
+        </p>
+        <input
+          id="track-url"
+          name="track-url"
+          type="url"
+          aria-describedby="url-help"
+          placeholder="https://example.com/audio.mp3"
+          autocomplete="off"
+          spellcheck="false"
+        />
+
+        <div class="actions">
+          <button type="button" data-action="enqueue">
+            Thêm vào hàng đợi
+          </button>
+          <button type="button" data-action="cancel-all">
+            Hủy tải và giải mã
+          </button>
+          <button type="button" data-action="stop">
+            Dừng phát
+          </button>
+        </div>
+
+        <p id="app-status" role="status" aria-atomic="true">
+          Chưa khởi tạo âm thanh.
+        </p>
+      </section>
+
+      <section aria-labelledby="queue-heading">
+        <h2 id="queue-heading">Hàng đợi tác vụ</h2>
+        <p id="queue-empty">Chưa có tác vụ.</p>
+        <ol id="task-list" aria-labelledby="queue-heading"></ol>
+      </section>
+
+      <section aria-labelledby="visualizer-heading">
+        <h2 id="visualizer-heading">Phổ tần số</h2>
+        <figure>
+          <canvas
+            id="audio-canvas"
+            width="768"
+            height="240"
+            role="img"
+            aria-labelledby="visualizer-heading"
+            aria-describedby="visualizer-description"
+          >
+            Biểu đồ cột biểu diễn cường độ các dải tần số âm thanh.
+          </canvas>
+          <figcaption id="visualizer-description">
+            Chiều cao mỗi cột biểu diễn cường độ của một dải tần số.
+            Biểu đồ là phần minh họa; trạng thái tác vụ được hiển thị bằng chữ.
+          </figcaption>
+        </figure>
+      </section>
+    </main>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
