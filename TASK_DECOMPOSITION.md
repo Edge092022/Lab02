@@ -281,8 +281,8 @@ Functional Slicing → Contract-First → Atomic Generation
 
 ### WBS
 
-- [ ] HW2-00: Review requirements and define the HW2 WBS.
-- [ ] HW2-01: Prepare a separate Vite + TypeScript workspace in hw2.
+- [x] HW2-00: Review requirements and define the HW2 WBS.
+- [x] HW2-01: Prepare a separate Vite + TypeScript workspace in hw2.
 - [ ] HW2-02: Define queue types, public API, and lifecycle contracts.
 - [ ] HW2-03: Implement and verify the audio download and decode module.
 - [ ] HW2-04: Implement and verify FIFO task scheduling.
@@ -347,22 +347,22 @@ Add supporting verification files only when needed for the current task.
 
 Record actual results only after performing each check.
 
-| Task   | Check                                                          | Actual result |
-| ------ | -------------------------------------------------------------- | ------------- |
-| HW2-00 | Requirements, assumptions, and WBS reviewed                    | Pending       |
-| HW2-01 | Independent workspace, TypeScript check, and build             | Pending       |
-| HW2-02 | Contracts reviewed against confirmed requirements              | Pending       |
-| HW2-03 | Valid audio, HTTP failure, invalid audio, and aborted download | Pending       |
-| HW2-04 | FIFO ordering and active-task limit                            | Pending       |
-| HW2-05 | Cancellation, promise settlement, and stale-result rejection   | Pending       |
-| HW2-06 | Playback end, stop, replacement, and source cleanup            | Pending       |
-| HW2-07 | FFT configuration and frequency data                           | Pending       |
-| HW2-08 | Rendering, single animation loop, and loop cancellation        | Pending       |
-| HW2-09 | Semantic structure, labels, and keyboard operation             | Pending       |
-| HW2-10 | Integrated controls and listener lifecycle                     | Pending       |
-| HW2-11 | Concurrent requests, failures, and cancellation scenarios      | Pending       |
-| HW2-12 | Recorded browser, workload, and measured rendering performance | Pending       |
-| HW2-13 | Repeated lifecycle cycles and memory/resource observations     | Pending       |
+| Task   | Check                                                          | Actual result                                                                                                                                              |
+| ------ | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HW2-00 | Requirements, assumptions, and WBS reviewed                    | Pending                                                                                                                                                    |
+| HW2-01 | Independent workspace, TypeScript check, and build             | Scaffold committed in 6fca27f; TypeScript and production build passed; student confirmed page display, counter operation, and no unexpected Console errors |
+| HW2-02 | Contracts reviewed against confirmed requirements              | Pending                                                                                                                                                    |
+| HW2-03 | Valid audio, HTTP failure, invalid audio, and aborted download | Pending                                                                                                                                                    |
+| HW2-04 | FIFO ordering and active-task limit                            | Pending                                                                                                                                                    |
+| HW2-05 | Cancellation, promise settlement, and stale-result rejection   | Pending                                                                                                                                                    |
+| HW2-06 | Playback end, stop, replacement, and source cleanup            | Pending                                                                                                                                                    |
+| HW2-07 | FFT configuration and frequency data                           | Pending                                                                                                                                                    |
+| HW2-08 | Rendering, single animation loop, and loop cancellation        | Pending                                                                                                                                                    |
+| HW2-09 | Semantic structure, labels, and keyboard operation             | Pending                                                                                                                                                    |
+| HW2-10 | Integrated controls and listener lifecycle                     | Pending                                                                                                                                                    |
+| HW2-11 | Concurrent requests, failures, and cancellation scenarios      | Pending                                                                                                                                                    |
+| HW2-12 | Recorded browser, workload, and measured rendering performance | Pending                                                                                                                                                    |
+| HW2-13 | Repeated lifecycle cycles and memory/resource observations     | Pending                                                                                                                                                    |
 
 ### Git Policy
 
