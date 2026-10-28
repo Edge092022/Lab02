@@ -286,7 +286,7 @@ Functional Slicing → Contract-First → Atomic Generation
 - [x] HW2-02: Define queue types, public API, and lifecycle contracts.
 - [x] HW2-03: Implement and verify the audio download and decode module.
 - [x] HW2-04: Implement and verify FIFO task scheduling.
-- [ ] HW2-05: Implement and verify task cancellation and stale-result handling.
+- [x] HW2-05: Implement and verify task cancellation and stale-result handling.
 - [ ] HW2-06: Implement and verify audio playback and source-node cleanup.
 - [ ] HW2-07: Implement and verify the analyser module and FFT configuration.
 - [ ] HW2-08: Implement and verify the Canvas visualizer lifecycle.
@@ -354,7 +354,7 @@ Record actual results only after performing each check.
 | HW2-02 | Contracts defined; TypeScript and production build | audio-queue-contract.ts created; npm run build (tsc && vite build) completed successfully; queue runtime behavior not yet implemented or tested |
 | HW2-03 | Audio loading, error handling, and cancellation | TypeScript and production build passed; browser checks passed for valid WAV (1 channel, 0.1s), blank URL, empty audio, invalid audio, and pre-aborted signal; controlled mocks passed for HTTP 503 before decode, cancellation during fetch, and cancellation during decode with result discarded; fetch restored after tests |
 | HW2-04 | FIFO ordering and active-task limit | Seven browser checks with a controlled loader passed: FIFO order, blank URL rejection, buffer delivery, continuation after failure, and restart after idle; maxActive=1 and final active=0; TypeScript and production build passed after fixing TS1294; queue cancellation not yet implemented |
-| HW2-05 | Cancellation, promise settlement, and stale-result rejection   | Pending                                                                                                                                                    |
+| HW2-05 | Cancellation, promise settlement, and stale-result rejection | TypeScript and production build passed; seven controlled-loader cancellation/disposal checks passed, including immediate rejection, waiting for the old loader, discarded cancelled results, and rejection after disposal; seven FIFO regression checks passed with order A,B,C,D, maxActive=1, and final active=0 |
 | HW2-06 | Playback end, stop, replacement, and source cleanup            | Pending                                                                                                                                                    |
 | HW2-07 | FFT configuration and frequency data                           | Pending                                                                                                                                                    |
 | HW2-08 | Rendering, single animation loop, and loop cancellation        | Pending                                                                                                                                                    |
