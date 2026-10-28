@@ -122,3 +122,20 @@ The post-fix result still needs to be verified.
   Keep tsconfig.json unchanged.
 - Verification: after the fix, npm run build completed successfully.
   The seven controlled-loader FIFO checks had passed before this syntax fix.
+
+## HW2-10 — DevTools helper unavailable inside test callback
+
+- Error: the AI-generated cleanup test called getEventListeners
+  directly inside a button event callback.
+- Evidence: Console reported
+  "ReferenceError: getEventListeners is not defined"
+  and the cleanup checks stopped before completion.
+- Scope: this was a verification-script error, not evidence of
+  a defect in audio-app.ts.
+- Fix: capture the Console helper before the first await:
+  const inspectListeners = getEventListeners;
+  Then call inspectListeners(root) inside the callback.
+- Verification: the corrected test completed with six PASS results:
+  delegated listener installation, single AudioContext creation,
+  repeated disposal, context closure and stale-update prevention,
+  remount listener count, and final listener removal.

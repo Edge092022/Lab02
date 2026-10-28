@@ -291,7 +291,7 @@ Functional Slicing → Contract-First → Atomic Generation
 - [x] HW2-07: Implement and verify the analyser module and FFT configuration.
 - [x] HW2-08: Implement and verify the Canvas visualizer lifecycle.
 - [x] HW2-09: Create the semantic, keyboard-accessible control interface.
-- [ ] HW2-10: Integrate controls through a lifecycle-managed application controller.
+- [x] HW2-10: Integrate controls through a lifecycle-managed application controller.
 - [ ] HW2-11: Verify concurrent requests, FIFO behavior, errors, and cancellation.
 - [ ] HW2-12: Measure rendering performance under recorded conditions.
 - [ ] HW2-13: Inspect memory and resource cleanup across repeated lifecycle cycles.
@@ -359,7 +359,7 @@ Record actual results only after performing each check.
 | HW2-07 | FFT configuration and frequency data | TypeScript and production build passed; seven browser analyser checks passed: fftSize=512, 256 bins, reused byte array, nonzero real-signal data, expected frequency peak, repeated disposal/read rejection, and external context ownership; sampleRate=48000 Hz, test frequency=750 Hz, peakBin=8, peakValue=255 |
 | HW2-08 | Rendering, single animation loop, and loop cancellation | Student confirmed successful build; seven controlled-scheduler checks passed for drawing and lifecycle, with scheduler restored; four real requestAnimationFrame checks passed for data reads, stop, restart, and disposal; fps and memory leaks not measured |
 | HW2-09 | Semantic structure, labels, and keyboard operation | Student confirmed TypeScript/build success, page display, label-to-input focus, Tab/Shift+Tab order and visible focus, native button keyboard activation, narrow layout without horizontal overflow, semantic DOM/status region, and no unexpected Console errors; audio actions not yet integrated; full accessibility assessment not performed |
-| HW2-10 | Integrated controls and listener lifecycle                     | Pending                                                                                                                                                    |
+| HW2-10 | Integrated controls and listener lifecycle | Student confirmed TypeScript/build success, audible playback, animated Canvas, stop/replay, keyboard controls, cancellation of pending tasks, and recovery after cancellation; six cleanup checks passed for delegated listener lifecycle, single context creation, repeated disposal, context closure, stale-update prevention, and remount; corrected DevTools test-helper error documented in AI_FAILURE_AUDIT.md; fps and memory leaks not measured |
 | HW2-11 | Concurrent requests, failures, and cancellation scenarios      | Pending                                                                                                                                                    |
 | HW2-12 | Recorded browser, workload, and measured rendering performance | Pending                                                                                                                                                    |
 | HW2-13 | Repeated lifecycle cycles and memory/resource observations     | Pending                                                                                                                                                    |
