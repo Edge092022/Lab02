@@ -284,7 +284,7 @@ Functional Slicing → Contract-First → Atomic Generation
 - [x] HW2-00: Review requirements and define the HW2 WBS.
 - [x] HW2-01: Prepare a separate Vite + TypeScript workspace in hw2.
 - [x] HW2-02: Define queue types, public API, and lifecycle contracts.
-- [ ] HW2-03: Implement and verify the audio download and decode module.
+- [x] HW2-03: Implement and verify the audio download and decode module.
 - [ ] HW2-04: Implement and verify FIFO task scheduling.
 - [ ] HW2-05: Implement and verify task cancellation and stale-result handling.
 - [ ] HW2-06: Implement and verify audio playback and source-node cleanup.
@@ -352,7 +352,7 @@ Record actual results only after performing each check.
 | HW2-00 | Requirements, assumptions, and WBS reviewed                    | Pending                                                                                                                                                    |
 | HW2-01 | Independent workspace, TypeScript check, and build             | Scaffold committed in 6fca27f; TypeScript and production build passed; student confirmed page display, counter operation, and no unexpected Console errors |
 | HW2-02 | Contracts defined; TypeScript and production build | audio-queue-contract.ts created; npm run build (tsc && vite build) completed successfully; queue runtime behavior not yet implemented or tested |
-| HW2-03 | Valid audio, HTTP failure, invalid audio, and aborted download | Pending                                                                                                                                                    |
+| HW2-03 | Audio loading, error handling, and cancellation | TypeScript and production build passed; browser checks passed for valid WAV (1 channel, 0.1s), blank URL, empty audio, invalid audio, and pre-aborted signal; controlled mocks passed for HTTP 503 before decode, cancellation during fetch, and cancellation during decode with result discarded; fetch restored after tests |
 | HW2-04 | FIFO ordering and active-task limit                            | Pending                                                                                                                                                    |
 | HW2-05 | Cancellation, promise settlement, and stale-result rejection   | Pending                                                                                                                                                    |
 | HW2-06 | Playback end, stop, replacement, and source cleanup            | Pending                                                                                                                                                    |
