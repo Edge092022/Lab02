@@ -283,7 +283,7 @@ Functional Slicing → Contract-First → Atomic Generation
 
 - [x] HW2-00: Review requirements and define the HW2 WBS.
 - [x] HW2-01: Prepare a separate Vite + TypeScript workspace in hw2.
-- [ ] HW2-02: Define queue types, public API, and lifecycle contracts.
+- [x] HW2-02: Define queue types, public API, and lifecycle contracts.
 - [ ] HW2-03: Implement and verify the audio download and decode module.
 - [ ] HW2-04: Implement and verify FIFO task scheduling.
 - [ ] HW2-05: Implement and verify task cancellation and stale-result handling.
@@ -351,7 +351,7 @@ Record actual results only after performing each check.
 | ------ | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | HW2-00 | Requirements, assumptions, and WBS reviewed                    | Pending                                                                                                                                                    |
 | HW2-01 | Independent workspace, TypeScript check, and build             | Scaffold committed in 6fca27f; TypeScript and production build passed; student confirmed page display, counter operation, and no unexpected Console errors |
-| HW2-02 | Contracts reviewed against confirmed requirements              | Pending                                                                                                                                                    |
+| HW2-02 | Contracts reviewed against confirmed requirements              | Queue API and lifecycle contracts defined; TypeScript and production build passed; runtime behavior not yet implemented                                    |
 | HW2-03 | Valid audio, HTTP failure, invalid audio, and aborted download | Pending                                                                                                                                                    |
 | HW2-04 | FIFO ordering and active-task limit                            | Pending                                                                                                                                                    |
 | HW2-05 | Cancellation, promise settlement, and stale-result rejection   | Pending                                                                                                                                                    |
