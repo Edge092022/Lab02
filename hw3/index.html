@@ -1,13 +1,127 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>hw3</title>
+    <title>11.11 Flash Sale — HW3</title>
   </head>
   <body>
-    <div id="app"></div>
+    <a href="#main-content">Đến nội dung chính</a>
+
+    <header>
+      <p>VIETNAM MEGA SALE · 11.11</p>
+      <h1>Săn deal chớp nhoáng</h1>
+      <p>Giữ hàng trước, thanh toán trong thời gian cho phép.</p>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      <p id="setup-note">
+        Giao diện đang chờ kết nối engine. Các số liệu chưa được khởi tạo.
+      </p>
+
+      <section aria-labelledby="sale-heading">
+        <h2 id="sale-heading">Phiên flash sale</h2>
+        <p id="sale-status">Chưa bắt đầu</p>
+        <p>
+          Thời gian còn lại:
+          <span id="countdown" role="timer" aria-live="off">--:--.---</span>
+        </p>
+
+        <dl class="stock-summary">
+          <dt>Tồn ban đầu</dt>
+          <dd id="initial-stock">—</dd>
+          <dt>Có thể mua</dt>
+          <dd id="available-stock">—</dd>
+          <dt>Đang giữ</dt>
+          <dd id="reserved-stock">—</dd>
+          <dt>Đã bán</dt>
+          <dd id="sold-stock">—</dd>
+        </dl>
+      </section>
+
+      <section aria-labelledby="product-heading">
+        <h2 id="product-heading">Tai nghe không dây</h2>
+        <p>Giá flash sale: <strong>199.000 ₫</strong></p>
+        <p id="reservation-help">
+          Mỗi lượt giữ có thời hạn riêng. Hết hạn, hàng được trả về kho.
+          Đây là mô phỏng, không phát sinh giao dịch thật.
+        </p>
+
+        <form id="reserve-form" aria-describedby="reservation-help">
+          <p>
+            <label for="request-id">Mã yêu cầu</label>
+            <input
+              id="request-id"
+              name="requestId"
+              type="text"
+              required
+              maxlength="80"
+              aria-describedby="request-help"
+            />
+          </p>
+          <p id="request-help">
+            Dùng lại cùng mã và số lượng để thử gửi lại một yêu cầu.
+          </p>
+          <p>
+            <label for="quantity">Số lượng</label>
+            <input
+              id="quantity"
+              name="quantity"
+              type="number"
+              min="1"
+              step="1"
+              value="1"
+              required
+            />
+          </p>
+          <button id="reserve-button" type="submit" disabled>
+            Giữ hàng
+          </button>
+        </form>
+      </section>
+
+      <section aria-labelledby="reservations-heading">
+        <h2 id="reservations-heading">Các lượt giữ hàng</h2>
+        <p id="reservations-empty">Chưa có lượt giữ hàng.</p>
+        <ul id="reservation-list"></ul>
+      </section>
+
+      <section aria-labelledby="simulation-heading">
+        <h2 id="simulation-heading">Mô phỏng nhiều người mua</h2>
+        <p id="simulation-help">
+          Các yêu cầu sẽ dùng chung một kho trong trình duyệt này.
+        </p>
+        <p>
+          <label for="buyer-count">Số yêu cầu mô phỏng</label>
+          <input
+            id="buyer-count"
+            type="number"
+            min="1"
+            max="1000"
+            step="1"
+            value="100"
+            aria-describedby="simulation-help"
+            required
+          />
+        </p>
+        <button id="simulate-button" type="button" disabled>
+          Chạy mô phỏng
+        </button>
+        <p id="simulation-result">Chưa chạy mô phỏng.</p>
+      </section>
+
+      <section aria-labelledby="feedback-heading">
+        <h2 id="feedback-heading">Thông báo</h2>
+        <p id="feedback" role="status" aria-atomic="true">
+          Chưa có thao tác.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Lab 02 · Homework 3 · Flash-Sale Engine</p>
+    </footer>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
