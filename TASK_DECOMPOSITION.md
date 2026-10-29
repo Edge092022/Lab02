@@ -396,7 +396,7 @@ in AI_FAILURE_AUDIT.md.
 - [x] HW3-03: Implement and verify the anti-drift countdown module.
 - [x] HW3-04: Implement and verify atomic inventory reservation.
 - [x] HW3-05: Implement and verify reservation expiry and stock release.
-- [ ] HW3-06: Implement and verify checkout and duplicate-request handling.
+- [x] HW3-06: Implement and verify checkout and duplicate-request handling.
 - [ ] HW3-07: Create the semantic, keyboard-accessible interface.
 - [ ] HW3-08: Integrate the application controller and lifecycle cleanup.
 - [ ] HW3-09: Implement and verify a concurrent-request simulation module.
@@ -482,7 +482,7 @@ Do not create empty commits to reach the required count.
 | HW3-03 | Deadline calculation, zero, invalid inputs, cancellation, delayed frames | Build passed; student screenshot confirmed six controlled-clock/scheduler checks passed: delayed frames, zero duration, repeated cancellation, cancellation inside callback, invalid durations, and callback errors; globals restored; real-browser timing not yet measured |
 | HW3-04 | Valid/invalid quantities, insufficient stock, atomic reservation | Build passed; student screenshot confirmed 10 module checks passed, including duplicate/conflicting requests, invalid inputs, sale deadline, unchanged input, detached result, timestamp errors, and 100 sequential requests with exactly 5 accepted for stock 5; concurrent engine behavior not yet tested |
 | HW3-05 | Exact expiry boundary, delayed cleanup, release once | Build passed; student screenshot confirmed nine checks passed: before/exact deadline, repeated expiry, delayed cleanup, terminal states, unchanged input, stock conservation, invalid timestamps, and empty inventory; automatic scheduling not yet tested |
-| HW3-06 | Checkout, expired checkout, repeated and conflicting requests | Pending |
+| HW3-06 | Checkout, expired checkout, repeated and conflicting requests | Build passed; student screenshot confirmed 10 checkout checks passed, including repeated checkout, exact expiry, release once, unknown/blank IDs, expiry reconciliation, unchanged input, detached result, stock conservation, and invalid clocks; duplicate/conflicting reservation requests verified in HW3-04; integrated engine not yet tested |
 | HW3-07 | Semantic structure, labels, keyboard, responsive layout | Pending |
 | HW3-08 | Integrated flow, disposal, remount, stale callbacks | Pending |
 | HW3-09 | Recorded workload, outcomes, no overselling | Pending |
