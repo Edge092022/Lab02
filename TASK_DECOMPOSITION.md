@@ -376,3 +376,124 @@ Record actual results only after performing each check.
 
 Record only confirmed AI errors with evidence and the applied fix
 in AI_FAILURE_AUDIT.md.
+
+## Homework 3 — High-Concurrency Flash-Sale E-Commerce Engine
+
+### Scope and Simulation Boundary
+
+- Implement separately in hw3; preserve existing assignments.
+- Simulate a Vietnam flash sale with a countdown and limited stock.
+- Simulate concurrent purchase requests against one shared in-memory engine.
+- This browser simulation does not provide server-side or cross-device locking.
+- Define concrete inputs, outputs, errors, and invariants before each module.
+- Confirm actual verification before marking any task complete.
+
+### WBS
+
+- [ ] HW3-00: Define scope, functional slices, and verification plan.
+- [ ] HW3-01: Prepare a separate Vite + TypeScript workspace.
+- [ ] HW3-02: Define inventory types, transitions, and public API contracts.
+- [ ] HW3-03: Implement and verify the anti-drift countdown module.
+- [ ] HW3-04: Implement and verify atomic inventory reservation.
+- [ ] HW3-05: Implement and verify reservation expiry and stock release.
+- [ ] HW3-06: Implement and verify checkout and duplicate-request handling.
+- [ ] HW3-07: Create the semantic, keyboard-accessible interface.
+- [ ] HW3-08: Integrate the application controller and lifecycle cleanup.
+- [ ] HW3-09: Implement and verify a concurrent-request simulation module.
+- [ ] HW3-10: Independently verify timing, inventory invariants, and recovery.
+- [ ] HW3-11: Document at least three evidenced AI flaws and their fixes.
+
+### Initial Contracts
+
+#### Countdown
+
+- Use an absolute deadline: targetTime = Date.now() + durationMs.
+- Calculate remaining time from the deadline on every animation frame.
+- Never subtract a fixed interval from the previous remaining value.
+- Reject negative or non-finite durations.
+- Clamp remaining time to zero.
+- Stop scheduling frames after completion.
+- Cancellation must be safe when repeated, including from onTick.
+- Define callback-error behavior before implementation.
+- Background tabs may delay callbacks; recalculate on resumption.
+- System clock changes can affect Date.now(); do not claim immunity.
+- Verify deadline accuracy separately from callback/render frequency.
+
+#### Inventory and Reservations
+
+- Reservation states: RESERVED, EXPIRED, and CHECKED_OUT.
+- A successful reservation has a unique ID and an absolute expiry time.
+- Accept positive integer quantities only.
+- Check availability and reserve stock in one synchronous operation.
+- Reconcile expired reservations before availability-sensitive operations.
+- Reject checkout when now >= expiresAt, even if cleanup ran late.
+- Release expired stock exactly once.
+- Successful checkout consumes reserved stock exactly once.
+- Repeated checkout for a successful reservation must not consume more stock.
+- Reusing a request ID with conflicting input must be rejected.
+- Preserve: initialStock = availableStock + reservedStock + soldStock.
+- All stock counts remain non-negative integers.
+- Return snapshots that cannot mutate internal state.
+- Define sale-end behavior and disposal semantics before implementation.
+
+#### Interface and Controller
+
+- Use semantic HTML, labeled controls, and visible keyboard focus.
+- Use textContent or safe DOM construction for dynamic text.
+- Use delegated events where appropriate.
+- Display countdown, available stock, reservations, and outcomes.
+- Avoid announcing millisecond updates continuously to screen readers.
+- Own and clean up timers, animation frames, and event listeners.
+- Prevent stale callbacks from changing disposed UI.
+
+#### Concurrency Simulation
+
+- Route all simulated buyers through the same inventory engine.
+- Define request count, stock, quantity, and scheduling conditions.
+- Collect successful and rejected outcomes.
+- Verify no overselling and conservation of stock.
+- Do not describe a single-browser test as distributed load testing.
+
+### Planned Atomic Commits
+
+1. docs(hw3): define flash-sale scope and task decomposition
+2. chore(hw3): scaffold isolated TypeScript workspace
+3. feat(hw3): define inventory state contracts
+4. feat(hw3): implement deadline-based countdown
+5. feat(hw3): implement atomic inventory reservation
+6. feat(hw3): implement reservation expiry
+7. feat(hw3): implement idempotent checkout
+8. feat(hw3): add accessible flash-sale interface
+9. feat(hw3): integrate application lifecycle
+10. feat(hw3): add concurrent purchase simulation
+11. test(hw3): verify timing and inventory invariants
+12. docs(hw3): document evidenced AI failures and fixes
+
+Commit only the files for the current verified task.
+Do not create empty commits to reach the required count.
+
+### Verification Record
+
+| Task | Check | Actual result |
+| --- | --- | --- |
+| HW3-00 | Scope, WBS, and contracts reviewed | Pending |
+| HW3-01 | Separate workspace, TypeScript, and build | Pending |
+| HW3-02 | API and transition contracts | Pending |
+| HW3-03 | Deadline calculation, zero, invalid inputs, cancellation, delayed frames | Pending |
+| HW3-04 | Valid/invalid quantities, insufficient stock, atomic reservation | Pending |
+| HW3-05 | Exact expiry boundary, delayed cleanup, release once | Pending |
+| HW3-06 | Checkout, expired checkout, repeated and conflicting requests | Pending |
+| HW3-07 | Semantic structure, labels, keyboard, responsive layout | Pending |
+| HW3-08 | Integrated flow, disposal, remount, stale callbacks | Pending |
+| HW3-09 | Recorded workload, outcomes, no overselling | Pending |
+| HW3-10 | Independent checks, build, Console, invariant preservation | Pending |
+| HW3-11 | At least three actual AI flaws with evidence, fixes, and rechecks | Pending |
+
+### AI Failure Audit Policy
+
+- Keep the existing AI_FAILURE_AUDIT.md content.
+- Add HW3 findings only when supported by actual evidence.
+- For each finding, record the AI suggestion, observed flaw, reproduction,
+  expected/actual behavior, fix, and actual verification result.
+- Do not count an unverified risk as a confirmed failure.
+- Do not deliberately introduce bugs to satisfy the audit requirement.
