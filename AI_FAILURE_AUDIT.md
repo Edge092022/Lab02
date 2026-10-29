@@ -249,4 +249,4 @@ The student reran the detached boundary test and supplied a screenshot:
 
 The passing assertion required the fallback message to appear and
 Invalid Date to be absent.
-Normal-date formatting regression checks remain pending.
+The student screenshot confirmed the normal-date formatting regression check passed: actual expiry text matched the expected local time. DevTools displayed No issues detected.
