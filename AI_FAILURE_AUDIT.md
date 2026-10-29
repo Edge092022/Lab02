@@ -139,3 +139,53 @@ The post-fix result still needs to be verified.
   delegated listener installation, single AudioContext creation,
   repeated disposal, context closure and stale-update prevention,
   remount listener count, and final listener removal.
+
+## HW3-A01 — Duplicate IDs introduced by the AI verification script
+
+### Source
+
+AI-generated DevTools scripts for controller lifecycle verification.
+The scripts used cloneNode(true) on #main-content and appended the
+clone to the same document, changing only the root ID.
+
+### Observed failure and evidence
+
+The student screenshot showed DevTools Issues reporting:
+"Duplicate form field id in the same form", with two affected resources.
+
+The cloned descendants retained the original input IDs.
+The original page and the temporary test region therefore contained
+duplicate IDs while the test region was attached.
+
+### Impact
+
+This was a verification-script defect, not an inventory-engine defect.
+Duplicate IDs can make label associations and document-level element
+lookups ambiguous and contaminate accessibility verification.
+
+Passing lifecycle assertions did not establish valid document semantics.
+
+### Correction
+
+The temporary test region was removed by the script's finally block.
+The student reloaded the page and ran a read-only duplicate-ID scan
+without attaching another cloned region.
+
+Future lifecycle tests must use an isolated document, such as an iframe,
+or consistently rename IDs and their referencing attributes.
+The previous clone-and-append scripts must not be reused unchanged.
+
+### Actual verification
+
+The student screenshot after reload showed:
+"Duplicate ID count: 0".
+DevTools also displayed "No issues".
+
+This confirms that the clean application page had no duplicate IDs
+at the time of that check.
+An isolated replacement lifecycle script has not yet been verified.
+
+### HW3 audit progress
+
+One confirmed HW3 finding is documented here.
+The requirement for at least three HW3 AI flaws is not yet satisfied.
