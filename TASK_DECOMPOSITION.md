@@ -393,7 +393,7 @@ in AI_FAILURE_AUDIT.md.
 - [x] HW3-00: Define scope, functional slices, and verification plan.
 - [x] HW3-01: Prepare a separate Vite + TypeScript workspace.
 - [ ] HW3-02: Define inventory types, transitions, and public API contracts.
-- [ ] HW3-03: Implement and verify the anti-drift countdown module.
+- [x] HW3-03: Implement and verify the anti-drift countdown module.
 - [ ] HW3-04: Implement and verify atomic inventory reservation.
 - [ ] HW3-05: Implement and verify reservation expiry and stock release.
 - [ ] HW3-06: Implement and verify checkout and duplicate-request handling.
@@ -479,7 +479,7 @@ Do not create empty commits to reach the required count.
 | HW3-00 | Scope, WBS, and contracts reviewed | Student confirmed the appended HW3 plan is correct; initial plan committed in 834a9b7 |
 | HW3-01 | Separate workspace, TypeScript, and build | Student confirmed npm run build passed, sample page displayed, counter worked, and Console had no unexpected errors |
 | HW3-02 | API and transition contracts | Pending |
-| HW3-03 | Deadline calculation, zero, invalid inputs, cancellation, delayed frames | Pending |
+| HW3-03 | Deadline calculation, zero, invalid inputs, cancellation, delayed frames | Build passed; student screenshot confirmed six controlled-clock/scheduler checks passed: delayed frames, zero duration, repeated cancellation, cancellation inside callback, invalid durations, and callback errors; globals restored; real-browser timing not yet measured |
 | HW3-04 | Valid/invalid quantities, insufficient stock, atomic reservation | Pending |
 | HW3-05 | Exact expiry boundary, delayed cleanup, release once | Pending |
 | HW3-06 | Checkout, expired checkout, repeated and conflicting requests | Pending |
