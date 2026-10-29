@@ -192,5 +192,61 @@ it does not directly prove internal reservation cancellation or memory cleanup.
 
 ### HW3 audit progress
 
-One confirmed HW3 finding is documented here.
+Two confirmed HW3 findings are documented below and above.
 The requirement for at least three HW3 AI flaws is not yet satisfied.
+
+
+## HW3-A02 — Accepted expiry timestamp rendered as Invalid Date
+
+### Source
+
+AI-generated expiry formatting in hw3/src/render-inventory.ts:
+new Date(reservation.expiresAt).toLocaleTimeString('vi-VN').
+
+### Reproduction
+
+Create an engine with:
+- now = Number.MAX_SAFE_INTEGER - 1000
+- reservationTtlMs = 500
+- saleEndsAt = Number.MAX_SAFE_INTEGER
+- initialStock = 1
+
+Reserve one item and render the snapshot into a detached test root.
+
+### Observed failure
+
+The student screenshot confirmed:
+- reservationAccepted: true
+- expiryIsSafeInteger: true
+- expiryText displayed an Invalid Date value.
+
+### Cause and impact
+
+The renderer assumed that every safe-integer timestamp accepted by
+the inventory contract could be formatted as a JavaScript Date.
+
+The boundary input satisfied the engine contract, but the calendar
+formatter could not represent it. The UI displayed an invalid expiry.
+This is a boundary-formatting defect; stock corruption was not observed.
+Ordinary current-date timestamps were not shown to be affected.
+
+### Fix
+
+Check expiryDate.getTime() before calendar formatting.
+When the Date is invalid, display the numeric timestamp with an explicit
+message that it is outside the calendar display range.
+Preserve the inventory timestamp contract.
+
+Fix commit: 8641290.
+
+### Actual verification
+
+The production build passed.
+The student reran the detached boundary test and supplied a screenshot:
+- reservationAccepted: true
+- expiryIsSafeInteger: true
+- passed: true
+
+The passing assertion required the fallback message to appear and
+Invalid Date to be absent.
+Normal-date formatting regression checks remain pending.
