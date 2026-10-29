@@ -1,3 +1,4 @@
+import { simulatePurchases } from './purchase-simulation';
 import { createAntiDriftTimer } from './anti-drift-timer';
 import { createInventoryEngine } from './inventory-engine';
 import { renderInventory } from './render-inventory';
@@ -25,6 +26,8 @@ export function mountFlashSale(root: HTMLElement): () => void {
   const quantityInput = required<HTMLInputElement>('#quantity');
   const reserveButton = required<HTMLButtonElement>('#reserve-button');
   const simulateButton = required<HTMLButtonElement>('#simulate-button');
+  const buyerCount = required<HTMLInputElement>('#buyer-count');
+  const simulationResult = required('#simulation-result');
   const countdown = required('#countdown');
   const saleStatus = required('#sale-status');
   const feedback = required('#feedback');
@@ -41,6 +44,7 @@ export function mountFlashSale(root: HTMLElement): () => void {
   let cancelCountdown: () => void = () => {};
   let expiryInterval: number | undefined;
   let saleEnded = false;
+  let simulationAbort: AbortController | null = null;
 
   function render(): void {
     renderInventory(root, engine.getSnapshot());
@@ -66,8 +70,14 @@ export function mountFlashSale(root: HTMLElement): () => void {
 
   function updateSaleStatus(): void {
     const ended = Date.now() >= saleEndsAt;
+
     reserveButton.disabled = disposed || ended;
-    saleStatus.textContent = ended ? 'Phiên sale đã kết thúc' : 'Đang mở bán';
+    simulateButton.disabled =
+      disposed || ended || simulationAbort !== null;
+
+    saleStatus.textContent = ended
+      ? 'Phiên sale đã kết thúc'
+      : 'Đang mở bán';
 
     if (ended && !saleEnded) {
       feedback.textContent =
@@ -103,8 +113,79 @@ export function mountFlashSale(root: HTMLElement): () => void {
     }
   }
 
+  async function runSimulation(): Promise<void> {
+    if (disposed || simulationAbort !== null) {
+      return;
+    }
+
+    if (!buyerCount.reportValidity()) {
+      return;
+    }
+
+    if (Date.now() >= saleEndsAt) {
+      updateSaleStatus();
+      return;
+    }
+
+    const controller = new AbortController();
+    simulationAbort = controller;
+    updateSaleStatus();
+
+    simulationResult.textContent = 'Đang xử lý các yêu cầu...';
+
+    try {
+      const report = await simulatePurchases(
+        engine,
+        buyerCount.valueAsNumber,
+        controller.signal,
+      );
+
+      if (disposed || controller.signal.aborted) {
+        return;
+      }
+
+      render();
+
+      simulationResult.textContent =
+        `Tổng ${report.requested} yêu cầu: ` +
+        `${report.accepted} giữ hàng thành công, ` +
+        `${report.rejected} bị từ chối, ` +
+        `${report.cancelled} đã hủy, ` +
+        `${report.errors} lỗi.`;
+
+      feedback.textContent =
+        'Mô phỏng hoàn tất. Các lượt giữ thành công có hạn 15 giây.';
+    } catch (error) {
+      if (!disposed) {
+        simulationResult.textContent =
+          error instanceof Error
+            ? error.message
+            : 'Không thể chạy mô phỏng.';
+      }
+    } finally {
+      if (simulationAbort === controller) {
+        simulationAbort = null;
+      }
+
+      if (!disposed) {
+        updateSaleStatus();
+      }
+    }
+  }
+
   function onClick(event: MouseEvent): void {
     if (disposed || !(event.target instanceof Element)) {
+      return;
+    }
+
+    const simulationButton =
+      event.target.closest<HTMLButtonElement>('#simulate-button');
+
+    if (
+      simulationButton === simulateButton &&
+      !simulateButton.disabled
+    ) {
+      void runSimulation();
       return;
     }
 
@@ -138,6 +219,10 @@ export function mountFlashSale(root: HTMLElement): () => void {
     }
 
     disposed = true;
+
+    simulationAbort?.abort();
+    simulationAbort = null;
+
     cancelCountdown();
 
     if (expiryInterval !== undefined) {
@@ -146,7 +231,9 @@ export function mountFlashSale(root: HTMLElement): () => void {
 
     root.removeEventListener('submit', onSubmit);
     root.removeEventListener('click', onClick);
+
     engine.dispose();
+
     reserveButton.disabled = true;
     simulateButton.disabled = true;
 
@@ -164,10 +251,11 @@ export function mountFlashSale(root: HTMLElement): () => void {
   try {
     render();
     updateSaleStatus();
+
     setupNote.textContent =
       'Mô phỏng: 10 sản phẩm · Sale 2 phút · Giữ hàng 15 giây.';
     feedback.textContent = 'Sẵn sàng giữ hàng.';
-    simulateButton.disabled = true;
+    simulationResult.textContent = 'Chưa chạy mô phỏng.';
 
     root.addEventListener('submit', onSubmit);
     root.addEventListener('click', onClick);
@@ -179,7 +267,7 @@ export function mountFlashSale(root: HTMLElement): () => void {
           return;
         }
 
-        // Use the same deadline as the inventory engine.
+        // Dùng cùng thời điểm kết thúc với inventory engine.
         const remaining = Math.max(0, saleEndsAt - Date.now());
         const minutes = Math.floor(remaining / 60_000);
         const seconds = Math.floor((remaining % 60_000) / 1000);
