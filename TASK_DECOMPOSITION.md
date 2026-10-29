@@ -398,7 +398,7 @@ in AI_FAILURE_AUDIT.md.
 - [x] HW3-05: Implement and verify reservation expiry and stock release.
 - [x] HW3-06: Implement and verify checkout and duplicate-request handling.
 - [x] HW3-07: Create the semantic, keyboard-accessible interface.
-- [ ] HW3-08: Integrate the application controller and lifecycle cleanup.
+- [x] HW3-08: Integrate the application controller and lifecycle cleanup.
 - [ ] HW3-09: Implement and verify a concurrent-request simulation module.
 - [ ] HW3-10: Independently verify timing, inventory invariants, and recovery.
 - [ ] HW3-11: Document at least three evidenced AI flaws and their fixes.
@@ -484,7 +484,7 @@ Do not create empty commits to reach the required count.
 | HW3-05 | Exact expiry boundary, delayed cleanup, release once | Build passed; student screenshot confirmed nine checks passed: before/exact deadline, repeated expiry, delayed cleanup, terminal states, unchanged input, stock conservation, invalid timestamps, and empty inventory; automatic scheduling not yet tested |
 | HW3-06 | Checkout, expired checkout, repeated and conflicting requests | Build passed; student screenshot confirmed 10 checkout checks passed, including repeated checkout, exact expiry, release once, unknown/blank IDs, expiry reconciliation, unchanged input, detached result, stock conservation, and invalid clocks; duplicate/conflicting reservation requests verified in HW3-04; integrated engine not yet tested |
 | HW3-07 | Semantic structure, labels, keyboard, responsive layout | Build passed; student confirmed layout, no horizontal overflow at approximately 375px, visible keyboard focus, label-to-input focus, skip-link navigation, disabled action buttons, and no unexpected Console errors; business actions not yet connected; full accessibility assessment not performed |
-| HW3-08 | Integrated flow, disposal, remount, stale callbacks | Pending |
+| HW3-08 | Integrated flow, disposal, remount, stale callbacks | Engine: 12 checks passed; renderer: 7 checks passed. Controller build passed before entry-point wiring. Student screenshot showed an expired reservation, a checked-out reservation, and sale-end feedback; student confirmed insufficient-stock feedback. Six lifecycle checks passed: initialization, duplicate-mount rejection, delegated submit, repeated disposal, unchanged UI/inactive submit after disposal, and remount. Full manual-flow checklist, final wired build, and memory leaks not yet verified |
 | HW3-09 | Recorded workload, outcomes, no overselling | Pending |
 | HW3-10 | Independent checks, build, Console, invariant preservation | Pending |
 | HW3-11 | At least three actual AI flaws with evidence, fixes, and rechecks | Pending |
