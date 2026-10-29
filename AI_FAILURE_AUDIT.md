@@ -183,7 +183,12 @@ DevTools also displayed "No issues".
 
 This confirms that the clean application page had no duplicate IDs
 at the time of that check.
-An isolated replacement lifecycle script has not yet been verified.
+A corrected lifecycle script kept the cloned root detached from the document.
+The student screenshot confirmed four passing checks: simulation started,
+no stale UI updates after disposal, action buttons remained disabled,
+and the test root stayed detached while page IDs remained unique.
+This verifies the corrected test setup and UI cleanup behavior;
+it does not directly prove internal reservation cancellation or memory cleanup.
 
 ### HW3 audit progress
 
