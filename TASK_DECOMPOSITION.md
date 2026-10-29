@@ -390,7 +390,7 @@ in AI_FAILURE_AUDIT.md.
 
 ### WBS
 
-- [ ] HW3-00: Define scope, functional slices, and verification plan.
+- [x] HW3-00: Define scope, functional slices, and verification plan.
 - [ ] HW3-01: Prepare a separate Vite + TypeScript workspace.
 - [ ] HW3-02: Define inventory types, transitions, and public API contracts.
 - [ ] HW3-03: Implement and verify the anti-drift countdown module.
@@ -476,7 +476,7 @@ Do not create empty commits to reach the required count.
 
 | Task | Check | Actual result |
 | --- | --- | --- |
-| HW3-00 | Scope, WBS, and contracts reviewed | Pending |
+| HW3-00 | Scope, WBS, and contracts reviewed | Student confirmed the appended HW3 plan is correct; initial plan committed in 834a9b7 |
 | HW3-01 | Separate workspace, TypeScript, and build | Pending |
 | HW3-02 | API and transition contracts | Pending |
 | HW3-03 | Deadline calculation, zero, invalid inputs, cancellation, delayed frames | Pending |
