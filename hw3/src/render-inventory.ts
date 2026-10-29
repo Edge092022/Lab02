@@ -58,10 +58,13 @@ export function renderInventory(
 
     if (reservation.state === 'RESERVED') {
       const expiry = document.createElement('p');
-      expiry.textContent =
-        'Hạn thanh toán: ' +
-        new Date(reservation.expiresAt).toLocaleTimeString('vi-VN');
+      const expiryDate = new Date(reservation.expiresAt);
 
+      const expiryLabel = Number.isNaN(expiryDate.getTime())
+        ? `timestamp ${reservation.expiresAt} ms (ngoài phạm vi lịch hiển thị)`
+        : expiryDate.toLocaleTimeString('vi-VN');
+
+      expiry.textContent = `Hạn thanh toán: ${expiryLabel}`;
       item.append(expiry);
     }
 
